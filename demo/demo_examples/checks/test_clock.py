@@ -13,12 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import json
+import datetime
 
 from compliance.check import ComplianceCheck
 from compliance.evidence import with_raw_evidences
 
-class WorldClockCheck(ComplianceCheck):
+class ClockCheck(ComplianceCheck):
     """Perform analysis on world clock evidence."""
 
     @property
@@ -28,16 +28,15 @@ class WorldClockCheck(ComplianceCheck):
 
         :returns: the title of the checks
         """
-        return 'World Clock'
+        return 'Clock'
 
-    @with_raw_evidences('time/world_clock_utc.json')
+    @with_raw_evidences('time/iso_clock_utc.txt')
     def test_day_of_year(self, evidence):
         """Check whether the day of the year is odd or even."""
-        ordinal_dt = json.loads(evidence.content)['ordinalDate']
-        _, day = ordinal_dt.split('-')
-        if int(day) % 2 == 0:
+        d = datetime.fromisoformat(evidence.content)
+        if int(d.day) % 2 == 0:
             self.add_failures(
-                'Even Day Violation', f'{day} in {ordinal_dt} is even!!'
+                'Even Day Violation', f'{d.day} in {evidence.content} is even!!'
             )
         else:
             self.add_warnings(
@@ -45,10 +44,11 @@ class WorldClockCheck(ComplianceCheck):
                 f'{day} in {ordinal_dt} will be even soon!!'
             )
 
-    @with_raw_evidences('time/world_clock_utc.json')
+    @with_raw_evidences('time/iso_clock_utc.json')
     def test_day_of_week(self, evidence):
         """Check whether the day is Wednesday."""
-        day_of_week = json.loads(evidence.content)['dayOfTheWeek']
+        d = datetime.fromisoformat(evidence.content)
+        day_of_week = d.strftime("%A")
         if day_of_week == 'Wednesday':
             self.add_failures('Wednesday Violation', f'It is Wednesday!!')
 
@@ -58,7 +58,7 @@ class WorldClockCheck(ComplianceCheck):
 
         :returns: the report(s) generated for this check
         """
-        return ['time/world_clock.md']
+        return ['time/iso_clock_utc.md']
 
     def msg_day_of_year(self):
         """

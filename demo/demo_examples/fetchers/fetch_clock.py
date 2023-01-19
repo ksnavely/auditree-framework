@@ -13,16 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from datetime import datetime
+
 from compliance.evidence import store_raw_evidence
 from compliance.fetch import ComplianceFetcher
 
-class WorldClockFetcher(ComplianceFetcher):
+class ClockFetcher(ComplianceFetcher):
     """Fetch the current coordinated universal time."""
 
-    @store_raw_evidence('time/world_clock_utc.json')
-    def fetch_world_clock_utc(self):
+    @store_raw_evidence('time/iso_clock_utc.txt')
+    def fetch_clock_utc(self):
         """Fetch the universal time."""
-        session = self.session('http://worldclockapi.com/api/json')
-        clock = session.get('utc/now')
-        clock.raise_for_status()
-        return clock.text
+        # This is where you might e.g. fetch your evidence
+        # from a remote API
+        now = datetime.utcnow().isoformat()
+        return now
