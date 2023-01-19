@@ -18,7 +18,7 @@ import json
 from compliance.check import ComplianceCheck
 from compliance.evidence import evidences, with_raw_evidences
 
-class ImageCheck(ComplianceCheck):
+class ImageHashCheck(ComplianceCheck):
     """Perform analysis on image evidence."""
 
     @property
@@ -30,21 +30,21 @@ class ImageCheck(ComplianceCheck):
         """
         return 'Auditree Image'
 
-    @with_raw_evidences('images/auditree_logo.png')
-    def test_image_content_with_decorator(self, evidence):
+    @with_raw_evidences('hashes/auditree_logo')
+    def test_image_hash_digest_with_decorator(self, evidence):
         """Check that the evidence content exists using decorator."""
         if not evidence.content:
             self.add_failures(
                 'Using decorator', 'auditree_logo.png evidence is empty'
             )
 
-    def test_image_content_with_ctx_mgr(self):
+    def test_image_hash_digest_with_ctx_mgr(self):
         """Check that the evidence content exists using context manager."""
-        with evidences(self, 'raw/images/auditree_logo.png') as evidence:
+        with evidences(self, 'raw/hashes/auditree_logo') as evidence:
             if not evidence.content:
                 self.add_failures(
                     'Using context manager',
-                    'auditree_logo.png evidence is empty'
+                    'auditree_logo hash digest evidence is empty'
                 )
 
     def get_reports(self):
@@ -53,9 +53,9 @@ class ImageCheck(ComplianceCheck):
 
         :returns: the report(s) generated for this check
         """
-        return ['images/image_check.md']
+        return ['images/image_hash_digest.md']
 
-    def msg_image_content_with_decorator(self):
+    def msg_image_hash_digest_with_decorator(self):
         """
         Image exists using decorator check notifier.
 
@@ -63,7 +63,7 @@ class ImageCheck(ComplianceCheck):
         """
         return {'body': None}
 
-    def msg_image_content_with_ctx_mgr(self):
+    def msg_image_hash_digest_with_ctx_mgr(self):
         """
         Image exists using context manager check notifier.
 

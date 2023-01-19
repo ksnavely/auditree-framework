@@ -13,13 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import hashlib
+
 from compliance.evidence import store_raw_evidence
 from compliance.fetch import ComplianceFetcher
 
-class ImageFetcher(ComplianceFetcher):
+class ImageHashFetcher(ComplianceFetcher):
     """Fetch the Auditree logo image and store as evidence."""
 
-    @store_raw_evidence('images/auditree_logo.png')
-    def fetch_auditree_logo(self):
-        """Fetch the Auditree logo."""
-        return open('at-logo.png', 'rb').read()
+    @store_raw_evidence('hashes/auditree_logo')
+    def fetch_auditree_logo_hash(self):
+        """Fetch the Auditree logo SHA512 hash digest."""
+        img_bytes = open('at-logo.png', 'rb').read()
+        m = hashlib.sha512()
+        m.update(img_bytes)
+
+        # We need to store evidence as a string, store the 
+        # SHA512 hash digest of the file
+        return m.hexdigest()
