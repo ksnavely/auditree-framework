@@ -19,29 +19,29 @@ from compliance.evidence import DAY, ReportEvidence, RawEvidence
 get_config().add_evidences(
     [
         RawEvidence(
-            'world_clock_utc.json',
+            'iso_clock_utc.txt',
             'time',
             DAY,
             'Coordinated Universal Time'
         ),
         RawEvidence(
-            'auditree_logo.png',
-            'images',
+            'auditree_logo',
+            'hashes',
             DAY,
-            'The Auditree logo image',
-            binary_content=True
+            'The Auditree logo image SHA512 hex digest',
+            binary_content=False
         ),
         ReportEvidence(
-            'world_clock.md',
+            'iso_clock_utc.md',
             'time',
             DAY,
             'World Clock Analysis report.'
         ),
         ReportEvidence(
-            'image_check.md',
-            'images',
+            'image_hash_digest.md',
+            'hashes',
             DAY,
-            'Image Check Analysis report.'
+            'Image Hash Digest Analysis report.'
         )
     ]
 )

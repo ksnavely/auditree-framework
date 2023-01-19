@@ -35,7 +35,7 @@ class ImageHashCheck(ComplianceCheck):
         """Check that the evidence content exists using decorator."""
         if not evidence.content:
             self.add_failures(
-                'Using decorator', 'auditree_logo.png evidence is empty'
+                'Using decorator', 'auditree_logo hash digest evidence is empty'
             )
 
     def test_image_hash_digest_with_ctx_mgr(self):
@@ -53,7 +53,7 @@ class ImageHashCheck(ComplianceCheck):
 
         :returns: the report(s) generated for this check
         """
-        return ['images/image_hash_digest.md']
+        return ['hashes/image_hash_digest.md']
 
     def msg_image_hash_digest_with_decorator(self):
         """
